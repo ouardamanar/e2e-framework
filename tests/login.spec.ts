@@ -6,7 +6,7 @@ test.describe('Authentification', () => {
     const login = new LoginPage(page);
     await login.goto();
     await login.login('standard_user', 'secret_sauce');
-    await expect(page).toHaveURL(/inventoryyy/);
+    await expect(page).toHaveURL(/inventory/);
   });
 
   test('[PROJ-2] Mauvais mot de passe @regression', async ({ page }) => {
