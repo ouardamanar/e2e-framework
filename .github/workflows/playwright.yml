@@ -24,3 +24,16 @@ jobs:
           path: |
             playwright-report/
             results/
+
+      - name: Notify Discord
+        if: always()
+        env:
+          WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
+          STATUS: ${{ job.status }}
+          REPO: ${{ github.repository }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          if [ "$STATUS" = "success" ]; then ICON="✅"; else ICON="❌"; fi
+          curl -X POST -H "Content-Type: application/json" \
+            -d "{\"content\":\"$ICON Tests $STATUS sur $REPO - $RUN_URL\"}" \
+            "$WEBHOOK_URL"
